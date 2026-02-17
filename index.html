@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Countdown 💙</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@500&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background: radial-gradient(circle at top, #0a1f44, #050d1f);
+    color:white;
+    font-family:'Poppins',sans-serif;
+    overflow:hidden;
+}
+
+/* ================= Countdown Card ================= */
+#countdownScreen{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(0,31,63,0.65);
+    padding:40px 35px;
+    border-radius:20px;
+    backdrop-filter:blur(12px);
+    box-shadow:0 0 40px rgba(0,198,255,0.6);
+    text-align:center;
+}
+
+#countdownTitle{
+    font-family:'Great Vibes',cursive;
+    font-size:48px;
+    margin-bottom:25px;
+    color:#00f2ff;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 10px #00c6ff; }
+    to{ text-shadow:0 0 30px #00f2ff; }
+}
+
+.timer{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+}
+
+.timeBox{
+    background:#001f3f;
+    padding:15px 20px;
+    border-radius:12px;
+    box-shadow:0 0 20px #00c6ff;
+}
+
+.timeBox span{
+    display:block;
+    font-family:'Orbitron',sans-serif;
+    font-size:30px;
+    color:#00f2ff;
+}
+
+.label{
+    font-size:12px;
+    color:#ccefff;
+}
+
+/* ================= Birthday Content ================= */
+#mainContent{
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:90%;
+    max-width:650px;
+    text-align:center;
+}
+
+#mainContent h2{
+    font-family:'Great Vibes',cursive;
+    font-size:60px;
+    margin:0;
+    color:#0026ff;
+    text-shadow:0 0 25px #00c6ff;
+}
+
+#mainContent p{
+    width:100%;
+    margin:25px auto 0 auto;
+    font-size:18px;
+    line-height:1.9;
+    color:rgb(0, 0, 0);
+    text-align:justify;
+    text-align-last:center;
+}
+
+/* ================= Floating Hearts ================= */
+.heart{
+    position:absolute;
+    font-size:20px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float{
+    0%{ transform:translateY(100vh); opacity:1; }
+    100%{ transform:translateY(-10vh); opacity:0; }
+}
+
+/* ================= Flash Effect ================= */
+.flash{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:white;
+    opacity:0;
+    pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Countdown -->
+<div id="countdownScreen">
+    <div id="countdownTitle">Something Special is Coming 💙</div>
+    <div class="timer">
+        <div class="timeBox">
+            <span id="hours">00</span>
+            <div class="label">HOURS</div>
+        </div>
+        <div class="timeBox">
+            <span id="minutes">00</span>
+            <div class="label">MIN</div>
+        </div>
+        <div class="timeBox">
+            <span id="seconds">00</span>
+            <div class="label">SEC</div>
+        </div>
+    </div>
+</div>
+
+<!-- Birthday Message -->
+<div id="mainContent">
+    <h2>🎂 Happy Birthday Ravina 💙✨</h2>
+    <p>
+        Happy birthday Ravina. May your smile always shine brighter than the 
+        stars and may happiness follow you wherever you go. 
+        You truly deserve endless love and joy today and forever. 💙🌌
+    </p>
+</div>
+
+<div class="flash" id="flash"></div>
+
+<script>
+
+// Target Date (18 Feb 2026 12:00 AM)
+var targetDate = new Date("Feb 17, 2026 12:26:05").getTime();
+
+var countdownFunction = setInterval(function() {
+
+    var now = new Date().getTime();
+    var distance = targetDate - now;
+
+    var totalHours = Math.floor(distance / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("hours").innerHTML = totalHours;
+    document.getElementById("minutes").innerHTML = minutes;
+    document.getElementById("seconds").innerHTML = seconds;
+
+    if (distance < 0) {
+        clearInterval(countdownFunction);
+        startCelebration();
+    }
+
+}, 1000);
+
+
+// Blue hearts before midnight
+setInterval(function(){
+    createHeart("💙");
+},600);
+
+
+// Celebration
+function startCelebration(){
+    document.getElementById("countdownScreen").style.display="none";
+    document.getElementById("mainContent").style.display="block";
+
+    flashEffect();
+    fireworkBurst();
+
+    setInterval(function(){
+        let colors=["❤️","💛","💚","💜","💖","💗","💙"];
+        createHeart(colors[Math.floor(Math.random()*colors.length)]);
+    },300);
+}
+
+// Flash
+function flashEffect(){
+    let flash=document.getElementById("flash");
+    flash.style.opacity="0.8";
+    setTimeout(()=>{flash.style.opacity="0";},200);
+}
+
+// Fireworks
+function fireworkBurst(){
+    for(let i=0;i<60;i++){
+        let spark=document.createElement("div");
+        spark.innerHTML="✨";
+        spark.style.position="absolute";
+        spark.style.left="50vw";
+        spark.style.top="50vh";
+        spark.style.fontSize="20px";
+        spark.style.transition="1s";
+        document.body.appendChild(spark);
+
+        let x=(Math.random()-0.5)*900;
+        let y=(Math.random()-0.5)*900;
+
+        setTimeout(()=>{
+            spark.style.transform=`translate(${x}px,${y}px)`;
+            spark.style.opacity=0;
+        },50);
+
+        setTimeout(()=>{spark.remove();},1000);
+    }
+}
+
+function createHeart(symbol){
+    var heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML=symbol;
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(Math.random()*25+15)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>{heart.remove();},6000);
+}
+
+</script>
+
+</body>
+</html>
